@@ -1,8 +1,10 @@
 -kan logge inn alle eksisterende kontoer fra URL med "http://127.0.0.1:500/stream/(brukernavn)
 trenger ikke passord i det hele tatt om man bruker ^
-linje 20 i routes.py
-Dette faller under nesten alle punktene fra STRIDE (forelesning03)
+^ linje 20 i routes.py
+hvis det er en hyperlink til en bruker kan man bruke den til å hoppe fra nåværende profil til navnet på linken
 (spoofing, tampering, information disclosure)
+-add friend gir tilgang til den vennens side, med tilgang til endring etc. sender bare url til profile/friend
+^ linje 60-73 i routes.py
 
 
 
@@ -11,10 +13,12 @@ tror ikke det er sql injection i login siden, men har hørt at det er andre plas
 dokumentere at det ikke er sql injection i login siden og vise fra koden hvorfor?
 https://www.acunetix.com/websitesecurity/sql-injection/
 ^ kanskje for mye
-
 https://www.owasp.org/index.php/Testing_for_Cross_site_scripting
 ^ for dokumentasjon og exploit/fix
+er ikke server side template injection
 
+
+-kan laste opp alle typer filer under share something, upload payload?
 
 
 -passord lagret i plaintext, burde bruke hashing med salt fra forelesning 12 (SCrypt/Argon2) 
