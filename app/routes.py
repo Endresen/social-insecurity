@@ -16,7 +16,9 @@ def index():
         user = query_db('SELECT * FROM Users WHERE username="{}";'.format(form.login.username.data), one=True)
         if user == None:
             flash('Sorry, this user does not exist!')
+            # TODO: hash password with salt instead of storing in plaintext (Argon2 etc from forelesning12)
         elif user['password'] == form.login.password.data:
+            # TODO: make actual login, not just url that anyone can access
             return redirect(url_for('stream', username=form.login.username.data))
         else:
             flash('Sorry, wrong password!')
@@ -35,6 +37,7 @@ def stream(username):
     user = query_db('SELECT * FROM Users WHERE username="{}";'.format(username), one=True)
     if form.is_submitted():
         if form.image.data:
+            # TODO: whitelist upload file types so you can't upload any file (possibly malicious)
             path = os.path.join(app.config['UPLOAD_PATH'], form.image.data.filename)
             form.image.data.save(path)
 

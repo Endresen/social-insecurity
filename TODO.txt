@@ -27,7 +27,7 @@ for bruk/kodeeksempel bruk forelesning 12 side 74 + 78 + 82 + 86 + 92 + 93
 ^ trenger ikke alle, kan bruke en. Kanskje fra side 78
 
 
-
+-bruke https istedet for http? med openssl
 
 
 
