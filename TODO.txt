@@ -16,7 +16,6 @@ https://www.acunetix.com/websitesecurity/sql-injection/
 ^ kanskje for mye
 https://www.owasp.org/index.php/Testing_for_Cross_site_scripting
 ^ for dokumentasjon og exploit/fix
-er ikke server side template injection
 
 
 
@@ -24,10 +23,14 @@ er ikke server side template injection
 
 
 
--passord lagret i plaintext, burde bruke hashing med salt fra forelesning 12 (SCrypt/Argon2) 
-forelesning 12 side 32 ^
-for bruk/kodeeksempel bruk forelesning 12 side 74 + 78 + 82 + 86 + 92 + 93
-^ trenger ikke alle, kan bruke en. Kanskje fra side 78
+-passord lagret i plaintext, burde bruke hashing med salt fra forelesning 12 (SCrypt/Argon2)
+bruk ser ut som argon2 er bedre (argon2id)
+##pip install flask-argon2
+https://pypi.org/project/argon2/
+##pip install argon2_cffi?
+https://pypi.org/project/argon2-cffi/
+https://www.youtube.com/watch?v=P3K8zkneBfg
+##https://github.com/red-coracle/flask-argon2
 
 
 
@@ -36,6 +39,12 @@ for bruk/kodeeksempel bruk forelesning 12 side 74 + 78 + 82 + 86 + 92 + 93
 
 
 
+
+
 -Lage data flow diagram
 -kanskje misuse case diagram/attack trees?
+-abuse case?
 -se på TODO i koden og gjøre det
+
+-threat modelling tool? owasp dragon?
+
