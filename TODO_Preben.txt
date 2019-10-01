@@ -35,16 +35,3 @@ https://www.youtube.com/watch?v=P3K8zkneBfg
 
 
 -bruke https istedet for http? med openssl
-
-
-
-
-
-
--Lage data flow diagram
--kanskje misuse case diagram/attack trees?
--abuse case?
--se på TODO i koden og gjøre det
-
--threat modelling tool? owasp dragon?
-
