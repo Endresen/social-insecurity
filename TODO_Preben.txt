@@ -34,4 +34,4 @@ https://www.youtube.com/watch?v=P3K8zkneBfg
 
 
 
--bruke https istedet for http? med openssl
+-bruke https istedet for http med openssl

@@ -7,3 +7,5 @@ class Config(object):
     DATABASE = 'database.db'
     UPLOAD_PATH = 'app/static/uploads'
     ALLOWED_EXTENSIONS = {} # Might use this at some point, probably don't want people to upload any file type
+    # TODO: implement this?
+    ## example = https://gist.github.com/dAnjou/2874714

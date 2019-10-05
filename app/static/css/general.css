@@ -1,3 +1,12 @@
 body {
     padding-top: 70px
 }
+
+p.help-block {
+    color: green;
+}
+
+div.g-captcha {
+    width: 400px;
+    margin: 0 auto;
+}
