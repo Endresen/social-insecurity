@@ -5,30 +5,38 @@ from wtforms.validators import InputRequired, EqualTo
 
 # defines all forms in the application, these will be instantiated by the template,
 # and the routes.py will read the values of the fields
-# TODO: Add validation, maybe use wtforms.validators??
-# TODO: There was some important security feature that wtforms provides, but I don't remember what; implement it
+# There was some important security feature that wtforms provides, but I don't remember what; implement it
+# ^ CSRF?
 
+# TODO: homepage doesnt work cause inputrequired cant be on both registerform and loginform
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', render_kw={'placeholder': 'Username'}, validators=[InputRequired(message='You must enter a username')])
-    password = PasswordField('Password', render_kw={'placeholder': 'Password'}, validators=[InputRequired(message='You must enter a password')])
+    username = StringField('Username', render_kw={'placeholder': 'Username'}, validators=[InputRequired(
+        message='You must enter a username')])
+    password = PasswordField('Password', render_kw={'placeholder': 'Password'}, validators=[InputRequired(
+        message='You must enter a password')])
     remember_me = BooleanField(
         'Remember me')  # TODO: It would be nice to have this feature implemented, probably by using cookies
 
-    captcha = RecaptchaField(validators=[Recaptcha(message='Prove that you are human to continue')])
+    log_captcha = RecaptchaField(validators=[Recaptcha(message='Prove that you are human to continue')])
 
     submit = SubmitField('Sign In')
 
 
 class RegisterForm(FlaskForm):
-    first_name = StringField('First Name', render_kw={'placeholder': 'First Name'}, validators=[InputRequired(message='You must enter a first name')])
-    last_name = StringField('Last Name', render_kw={'placeholder': 'Last Name'}, validators=[InputRequired(message='You must enter a last name')])
-    username = StringField('Username', render_kw={'placeholder': 'Username'}, validators=[InputRequired(message='You must enter a username')])
-    password = PasswordField('Password', render_kw={'placeholder': 'Password'}, validators=[InputRequired(message='You must enter a password')])
-    confirm_password = PasswordField('Confirm Password', render_kw={'placeholder': 'Confirm Password'}, validators=[EqualTo('password', message='Passwords not identical'),
-                                                                                                                    InputRequired(message='You must confirm password')])
+    first_name = StringField('First Name', render_kw={'placeholder': 'First Name'}, validators=[InputRequired(
+        message='You must enter a first name')])
+    last_name = StringField('Last Name', render_kw={'placeholder': 'Last Name'}, validators=[InputRequired(
+        message='You must enter a last name')])
+    username = StringField('Username', render_kw={'placeholder': 'Username'}, validators=[InputRequired(
+        message='You must enter a username')])
+    password = PasswordField('Password', render_kw={'placeholder': 'Password'}, validators=[InputRequired(
+        message='You must enter a password')])
+    confirm_password = PasswordField('Confirm Password', render_kw={'placeholder': 'Confirm Password'},
+                                     validators=[EqualTo('password', message='Passwords not identical'),
+                                                 InputRequired(message='You must confirm password')])
 
-    captcha = RecaptchaField(validators=[Recaptcha(message='Prove that you are human to continue')])
+    reg_captcha = RecaptchaField(validators=[Recaptcha(message='Prove that you are human to continue')])
 
     submit = SubmitField('Sign Up')
 

@@ -56,7 +56,7 @@ def index():
     elif form.validate_on_submit():
         checkUser = query_db('SELECT * FROM Users WHERE username=?', [form.username.data], one=True) is not None
         if not checkUser:
-            # TODO: argon2
+            # TODO: argon2 on password and store hash instead
             query_db(
                 'INSERT INTO Users (username, first_name, last_name, password) VALUES(?, ?, ?, ?;'.format(
                     form.register.username.data, form.register.first_name.data,
@@ -92,7 +92,9 @@ def stream(username):
 
     # TODO: fix dette/rename
     posts = query_db(
-        'SELECT p.*, u.*, (SELECT COUNT(*) FROM Comments WHERE p_id=p.id) AS cc FROM Posts AS p JOIN Users AS u ON u.id=p.u_id WHERE p.u_id IN (SELECT u_id FROM Friends WHERE f_id={0}) OR p.u_id IN (SELECT f_id FROM Friends WHERE u_id={0}) OR p.u_id={0} ORDER BY p.creation_time DESC;'.format(
+        'SELECT p.*, u.*, (SELECT COUNT(*) FROM Comments WHERE p_id=p.id) AS cc FROM Posts AS p JOIN Users AS u ON u.id=p.u_id '
+        'WHERE p.u_id IN (SELECT u_id FROM Friends WHERE f_id={0}) OR p.u_id IN (SELECT f_id FROM Friends WHERE u_id={0}) '
+        'OR p.u_id={0} ORDER BY p.creation_time DESC;'.format(
             user['id']))
     return render_template('stream.html', title='Stream', username=username, form=form, posts=posts, current_user=this_user(username))
 
@@ -108,7 +110,7 @@ def comments(username, p_id):
 
     post = query_db('SELECT * FROM Posts WHERE id={};'.format(p_id), one=True)
     all_comments = query_db(
-        'SELECT DISTINCT * FROM Comments AS c JOIN Users AS u ON c.u_id=u.id WHERE c.p_id={} ORDER BY c.creation_time DESC;'.format(
+        'SELECT DISTINCT * FROM Comments AS c JOIN Users AS u ON c.u_id=u.id WHERE c.p_id=? ORDER BY c.creation_time DESC;'.format(
             p_id))
     return render_template('comments.html', title='Comments', username=username, form=form, post=post,
                            comments=all_comments)

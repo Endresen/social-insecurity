@@ -21,6 +21,7 @@
                         {{ wtf.form_field(form.login.username) }}
                         {{ wtf.form_field(form.login.password) }}
                         {{ wtf.form_field(form.login.remember_me) }}
+                        {{ wtf.form_field(form.login.log_captcha) }}
                         {{ wtf.form_field(form.login.submit, class="btn btn-primary") }}
                     </form>
                 </div>
@@ -40,6 +41,7 @@
                         {{ wtf.form_field(form.register.username) }}
                         {{ wtf.form_field(form.register.password) }}
                         {{ wtf.form_field(form.register.confirm_password) }}
+                        {{ wtf.form_field(form.register.reg_captcha) }}
                         {{ wtf.form_field(form.register.submit, class="btn btn-primary") }}
                     </form>
                 </div>
