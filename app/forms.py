@@ -3,6 +3,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, FormF
 from wtforms.fields.html5 import DateField
 from wtforms.validators import InputRequired, EqualTo
 
+
 # defines all forms in the application, these will be instantiated by the template,
 # and the routes.py will read the values of the fields
 # There was some important security feature that wtforms provides, but I don't remember what; implement it
