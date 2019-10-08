@@ -12,14 +12,18 @@ import flask_login
 
 # create and configure app
 app = Flask(__name__)
-csrf = CSRFProtect()
+
+# csrf = CSRFProtect()
 # csrf.init_app(app)
+# csrf.protect()
+
 Bootstrap(app)
-# TODO: keys are copied, make new ones. maybe with some wtforms stuff?
+# TODO: keys are borrowed, maybe make new ones.
 app.config['SECRET_KEY'] = '78w0o5tuuGex5Ktk8VvVDFJ124JSAD20u'
 app.config['RECAPTCHA_PUBLIC_KEY'] = '6LdT97oUAAAAAIKKsg07xw79ZeG1vLvHEMWSH678'
 app.config['RECAPTCHA_PRIVATE_KEY'] = '6LdT97oUAAAAAMJU0SXQ-ysOU099fV6dTTO2V7Tr'
 app.config.from_object(Config)
+
 
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
