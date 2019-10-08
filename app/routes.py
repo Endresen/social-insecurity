@@ -40,8 +40,10 @@ def index():
 
     form = IndexForm()
 
-    if form.validate_on_submit():
-        user = query_db('SELECT * FROM Users WHERE username=?;', [form.username.data], one=True)
+    # if form.validate_on_submit():
+    if form.login.submit():
+        # sql is broken
+        user = query_db('SELECT * FROM Users WHERE username=?;', [form.login.username.data], one=True)
         if user is None:
             flash('Sorry, this user does not exist!')
         # elif user['password'] == form.login.passwordHash.data:
@@ -53,12 +55,13 @@ def index():
         else:
             flash('Sorry, wrong password!')
 
-    elif form.validate_on_submit():
-        checkUser = query_db('SELECT * FROM Users WHERE username=?', [form.username.data], one=True) is not None
+    elif form.register.submit():
+        checkUser = query_db('SELECT * FROM Users WHERE username=?', [form.register.username.data],
+                             one=True) is not None
         if not checkUser:
             # TODO: argon2 on password and store hash instead
             query_db(
-                'INSERT INTO Users (username, first_name, last_name, password) VALUES(?, ?, ?, ?;'.format(
+                'INSERT INTO Users (username, first_name, last_name, password) VALUES(?, ?, ?, ?)'.format(
                     form.register.username.data, form.register.first_name.data,
                     form.register.last_name.data, form.register.passwordHash))
             return redirect(url_for('index'))
