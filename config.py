@@ -9,6 +9,7 @@ class Config(object):
     UPLOAD_PATH = 'app/static/uploads'
     ALLOWED_EXTENSIONS = {'jpg', 'gif', 'png', 'txt', 'pdf', 'jpeg'}  # Might use this at some point, probably don't want people to upload any file type
 
+    RECAPTCHA_USE_SSL = True
     FLASK_APP = os.environ.get('FLASK_APP')
     FLASK_ENV = os.environ.get('FLASK_ENV')
     FLASK_DEBUG = os.environ.get('FLASK_DEBUG')

@@ -10,11 +10,13 @@ import os
 import ssl
 from flask_sqlalchemy import SQLAlchemy
 from flask_argon2 import Argon2
-#from flask_wtf import CSRFProtect
+from flask_wtf import CSRFProtect
 
 # TODO: implement this?
 # from flask_wtf.csrf import CSRFProtect #####https://flask-wtf.readthedocs.io/en/stable/csrf.html
 import flask_login
+import logging as log
+
 
 # create and configure app
 app = Flask(__name__)
@@ -29,9 +31,14 @@ app.config['SECRET_KEY'] = '45w0p5ttuGex5Ktk6KkVDFJ164JSaRr0u'
 app.config['RECAPTCHA_PUBLIC_KEY'] = '6LcFtLwUAAAAAG4IdRDBHUOg_M5ZwcTijXk2rpB0'
 app.config['RECAPTCHA_PRIVATE_KEY'] = '6LcFtLwUAAAAAObhd2OvXlY0VeOZtIBzWmjvGKUl'
 app.config.from_object(Config)
+
+
 context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
 context.load_cert_chain('cert.pem', 'key.pem')
 
+
+log.basicConfig(level=log.INFO, format="[%(levelname)s] %(message)s", handlers=[
+        log.FileHandler('log.log'), log.StreamHandler()])
 
 login_manager = LoginManager()
 login_manager.init_app(app)
