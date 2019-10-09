@@ -19,3 +19,49 @@
 [INFO] 127.0.0.1 - - [09/Oct/2019 19:33:11] "GET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
 [INFO] 127.0.0.1 - - [09/Oct/2019 19:33:12] "GET /?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
 [INFO] 127.0.0.1 - - [09/Oct/2019 19:33:12] "GET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+[INFO]  * Restarting with stat
+[WARNING]  * Debugger is active!
+[INFO]  * Debugger PIN: 358-071-675
+[INFO]  * Running on https://127.0.0.1:5000/ (Press CTRL+C to quit)
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:46:22] "GET / HTTP/1.1" 500 -
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:46:22] "GET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:46:22] "GET /?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:46:22] "GET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:46:23] "GET /?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:46:23] "GET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:46:23] "GET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:46:40] "GET / HTTP/1.1" 500 -
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:46:40] "GET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:46:40] "GET /?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:46:40] "GET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:46:41] "GET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:46:41] "GET /?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+[INFO]  * Restarting with stat
+[WARNING]  * Debugger is active!
+[INFO]  * Debugger PIN: 358-071-675
+[INFO]  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:48:18] "GET / HTTP/1.1" 500 -
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:48:19] "GET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:48:19] "GET /?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:48:19] "GET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:48:19] "GET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:48:19] "GET /?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:48:19] "GET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+[INFO]  * Detected change in 'C:\\Users\\Admin\\social-insecurity\\app\\routes.py', reloading
+[INFO]  * Restarting with stat
+[WARNING]  * Debugger is active!
+[INFO]  * Debugger PIN: 358-071-675
+[INFO]  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+[INFO]  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:51:25] "GET / HTTP/1.1" 500 -
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:51:25] "GET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:51:25] "GET /?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:51:25] "GET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:51:26] "GET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:51:26] "GET /?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:51:47] "GET / HTTP/1.1" 500 -
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:51:47] "GET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:51:47] "GET /?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:51:47] "GET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:51:47] "GET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+[INFO] 127.0.0.1 - - [09/Oct/2019 19:51:47] "GET /?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -

@@ -40,7 +40,7 @@ def index():
         return redirect(url_for('stream', username=current_user()))
     form = IndexForm()
 
-    if form.validate_on_submit():
+    if form.login.submit():
         user = query_db('SELECT * FROM Users WHERE username=?;', [form.login.username.data], one=True)
         pw_hash = argon2.generate_password_hash(form.login.data)
         db_hash = user['password']

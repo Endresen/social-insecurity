@@ -80,9 +80,9 @@ def init_db():
 
 # TODO: maybe?
 # perform generic query, not very secure yet
-def query_db(query, one=False):
+def query_db(query, args=(), one=False):
     db = get_db()
-    cursor = db.execute(query)
+    cursor = db.execute(query, args)
     rv = cursor.fetchall()
     cursor.close()
     db.commit()
@@ -105,8 +105,6 @@ if not os.path.exists(app.config['DATABASE']):
 
 if not os.path.exists(app.config['UPLOAD_PATH']):
     os.mkdir(app.config['UPLOAD_PATH'])
-
-
 
 from app import routes
 
