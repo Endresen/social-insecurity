@@ -40,7 +40,7 @@ def index():
         return redirect(url_for('stream', username=current_user()))
     form = IndexForm()
 
-    if form.login.submit():
+    if form.login.validate_on_submit():
         user = query_db('SELECT * FROM Users WHERE username=?;', [form.login.username.data], one=True)
         pw_hash = argon2.generate_password_hash(form.login.data)
         db_hash = user['password']
@@ -54,7 +54,7 @@ def index():
             app.logger.warning('%s typed wrong password', user["username"])
             flash('Wrong login information')
 
-    elif form.register.submit():
+    if form.register.validate_on_submit():
         check_user = query_db('SELECT * FROM Users WHERE username=?', [form.register.username.data],
                              one=True) is not None
         if not check_user:
