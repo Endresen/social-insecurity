@@ -42,26 +42,34 @@ def index():
 
     if form.login.submit.data and form.login.validate_on_submit():
         user = query_db('SELECT * FROM Users WHERE username=?;', [form.login.username.data], one=True)
-        pw_hash = argon2.generate_password_hash(str(form.login.data).encode('utf8'))
-        db_hash = user['password']
-        print(pw_hash)
-        print(db_hash)
-        if argon2.check_password_hash(pw_hash, db_hash):
-            currentuser = User()
-            currentuser.id = user["username"]
-            flask_login.login_user(currentuser, form.remember_me.data)
-            app.logger.info('%s logged in', form.login.data.id)
-            return redirect(url_for('stream', username=form.login.username.data))
+
+        if user is not None:
+            encoded_string = str(form.login.password.data).encode('utf8')
+            # print(encoded_string)
+            pw_hash = argon2.generate_password_hash(encoded_string)
+            db_hash = user['password']
+            # print(pw_hash)
+            # print(db_hash)
+            if argon2.check_password_hash(pw_hash, db_hash):
+                currentuser = User()
+                currentuser.id = user["username"]
+                flask_login.login_user(currentuser, form.remember_me.data)
+                app.logger.info('%s logged in', form.login.data.id)
+                return redirect(url_for('stream', username=form.login.username.data))
+            else:
+                app.logger.warning('%s typed wrong password', user["username"])
+                flash('Wrong login information')
         else:
-            app.logger.warning('%s typed wrong password', user["username"])
-            flash('Wrong login information')
+            flash("Wrong login information")
 
     if form.register.submit.data and form.register.validate_on_submit():
         check_user = query_db('SELECT * FROM Users WHERE username=?', [form.register.username.data],
-                             one=True) is not None
+                              one=True) is not None
         if not check_user:
-            reg_hash = argon2.generate_password_hash(str(form.register.password.data).encode('utf8'))
-            print(reg_hash)
+            enc_string = str(form.register.password.data).encode('utf8')
+            # print(enc_string)
+            reg_hash = argon2.generate_password_hash(enc_string)
+            # print(reg_hash)
             query_db('INSERT INTO Users (username, first_name, last_name, password) VALUES(?,?,?,?);',
                      [form.register.username.data, form.register.first_name.data,
                       form.register.last_name.data, reg_hash])
@@ -95,6 +103,7 @@ def stream(username):
              form.image.data.filename,
              datetime.now()])
         return redirect(url_for('stream', username=username))
+    else:
         flash("This is not your profile to edit")
 
     if user is None:
@@ -107,7 +116,7 @@ def stream(username):
         'SELECT p.*, u.*, (SELECT COUNT(*) FROM Comments WHERE p_id=p.id) AS cc FROM Posts AS p JOIN Users AS u ON u.id=p.u_id WHERE p.u_id IN (SELECT u_id FROM Friends WHERE f_id=?) OR p.u_id IN (SELECT f_id FROM Friends WHERE u_id=?) OR p.u_id=? ORDER BY p.creation_time DESC;',
         [user['id'], user['id'], user['id']])
     return render_template('stream.html', title='Stream', username=username, form=form, posts=posts,
-                           is_current_user=is_current_user(username))
+                           is_current_user=current_user(username))
 
 
 # comment page for a given post and user.
@@ -143,8 +152,8 @@ def friends(username):
         flash(username + " does not exist")
         return redirect('/friends/' + current_user())
 
-    all_friends = query_db('SELECT * FROM Friends AS f JOIN Users as u ON f.f_id=u.id WHERE f.u_id=? AND f.f_id!=? ;',
-                           [user['id'], user['id']])
+    friends = query_db('SELECT * FROM Friends AS f JOIN Users as u ON f.f_id=u.id WHERE f.u_id=? AND f.f_id!=? ;',
+                       [user['id'], user['id']])
 
     form = FriendsForm()
     if form.validate_on_submit():
@@ -161,7 +170,7 @@ def friends(username):
             flash('You cant add yourself as a friend')
         else:
             is_friended = False
-            for f in all_friends:
+            for f in friends:
                 if friend['username'] == f['username']:
                     is_friended = True
                     break
@@ -173,9 +182,9 @@ def friends(username):
             else:
                 app.logger.info('\'%s\' successfully added friend \'%s\'', current_user(), friend['username'])
                 query_db('INSERT INTO Friends (u_id, f_id) VALUES(?, ?);', [user['id'], friend['id']])
-                all_friends.append(friend)
+                friends.append(friend)
 
-    return render_template('friends.html', title='Friends', username=username, friends=all_friends, form=form,
+    return render_template('friends.html', title='Friends', username=username, friends=friends, form=form,
                            current_user=current_user(username))
 
 
