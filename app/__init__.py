@@ -1,10 +1,16 @@
 from flask import Flask, g
+from flask_login import LoginManager
 from flask_wtf import CSRFProtect
 
 from config import Config
 from flask_bootstrap import Bootstrap
+from flask_login import LoginManager
 import sqlite3
 import os
+import ssl
+from flask_sqlalchemy import SQLAlchemy
+from flask_argon2 import Argon2
+#from flask_wtf import CSRFProtect
 
 # TODO: implement this?
 # from flask_wtf.csrf import CSRFProtect #####https://flask-wtf.readthedocs.io/en/stable/csrf.html
@@ -16,17 +22,20 @@ app = Flask(__name__)
 # csrf = CSRFProtect()
 # csrf.init_app(app)
 # csrf.protect()
-
+argon2 = Argon2(app)
 Bootstrap(app)
-# TODO: keys are borrowed, maybe make new ones.
-app.config['SECRET_KEY'] = '78w0o5tuuGex5Ktk8VvVDFJ124JSAD20u'
-app.config['RECAPTCHA_PUBLIC_KEY'] = '6LdT97oUAAAAAIKKsg07xw79ZeG1vLvHEMWSH678'
-app.config['RECAPTCHA_PRIVATE_KEY'] = '6LdT97oUAAAAAMJU0SXQ-ysOU099fV6dTTO2V7Tr'
+
+app.config['SECRET_KEY'] = '45w0p5ttuGex5Ktk6KkVDFJ164JSaRr0u'
+app.config['RECAPTCHA_PUBLIC_KEY'] = '6LcFtLwUAAAAAG4IdRDBHUOg_M5ZwcTijXk2rpB0'
+app.config['RECAPTCHA_PRIVATE_KEY'] = '6LcFtLwUAAAAAObhd2OvXlY0VeOZtIBzWmjvGKUl'
 app.config.from_object(Config)
+context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+context.load_cert_chain('cert.pem', 'key.pem')
 
 
-login_manager = flask_login.LoginManager()
+login_manager = LoginManager()
 login_manager.init_app(app)
+db = SQLAlchemy()
 
 
 class User(flask_login.UserMixin):
@@ -64,9 +73,9 @@ def init_db():
 
 # TODO: maybe?
 # perform generic query, not very secure yet
-def query_db(query, args=(), one=False):
+def query_db(query, one=False):
     db = get_db()
-    cursor = db.execute(query, args)
+    cursor = db.execute(query)
     rv = cursor.fetchall()
     cursor.close()
     db.commit()
@@ -90,4 +99,9 @@ if not os.path.exists(app.config['DATABASE']):
 if not os.path.exists(app.config['UPLOAD_PATH']):
     os.mkdir(app.config['UPLOAD_PATH'])
 
+
+
 from app import routes
+
+if __name__ == "__main__":
+    app.run(ssl_context=context)

@@ -5,9 +5,14 @@ import os
 
 class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'secret'  # TODO: Use this with wtforms
-    # ^ https://overiq.com/flask-101/form-handling-in-flask/
-    DATABASE = 'database.db'
+    DATABASE = 'database_2.db'
     UPLOAD_PATH = 'app/static/uploads'
-    ALLOWED_EXTENSIONS = {}  # Might use this at some point, probably don't want people to upload any file type
-    # TODO: implement this?
-    ## example = https://gist.github.com/dAnjou/2874714
+    ALLOWED_EXTENSIONS = {'jpg', 'gif', 'png', 'txt', 'pdf', 'jpeg'}  # Might use this at some point, probably don't want people to upload any file type
+
+    FLASK_APP = os.environ.get('FLASK_APP')
+    FLASK_ENV = os.environ.get('FLASK_ENV')
+    FLASK_DEBUG = os.environ.get('FLASK_DEBUG')
+
+    # Database
+    SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
+    SQLALCHEMY_TRACK_MODIFICATIONS = os.environ.get('SQLALCHEMY_TRACK_MODIFICATIONS')

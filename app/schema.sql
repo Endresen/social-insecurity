@@ -17,7 +17,7 @@ CREATE TABLE [Users] (
   username VARCHAR,
   first_name VARCHAR,
   last_name VARCHAR,
-  [password] VARCHAR,
+  [password] BINARY(64),
   education VARCHAR DEFAULT 'Unknown',
   employment VARCHAR DEFAULT 'Unknown',
   music VARCHAR DEFAULT 'Unknown',

@@ -11,6 +11,8 @@ Werkzeug==0.15.6
 wincertstore==0.2
 WTForms==2.2.1
 
-argon2-cffi==19.1.0
+Flask-Argon2==0.1.5.1
 flask-login==0.4.1
+Flask-SQLAlchemy==2.4.1
 pyopenssl==19.0.0
+
