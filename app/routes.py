@@ -34,12 +34,10 @@ def this_user(username):
 def index():
     form = IndexForm()
 
-    if form.login.submit():
-        # sql funker ikke, sier    user = query_db('SELECT * FROM Users WHERE username=?;', [form.login.username.data], one=True)
-        # TypeError: query_db() got multiple values for argument 'one'
+    if form.login.submit() and form.login.is_submitted():
         user = query_db('SELECT * FROM Users WHERE username=?;', [form.login.username.data], one=True)
         pw_hash = argon2.generate_password_hash(form.login.data)
-        db_hash = # dra pw_hash fra database
+        db_hash = user['password']# dra pw_hash fra database
         if argon2.check_password_hash(pw_hash, db_hash):
             currentuser = User()
             currentuser.id = user["username"]

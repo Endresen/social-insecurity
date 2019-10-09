@@ -5,7 +5,7 @@ import os
 
 class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'secret'  # TODO: Use this with wtforms
-    DATABASE = 'database_2.db'
+    DATABASE = 'database.db'
     UPLOAD_PATH = 'app/static/uploads'
     ALLOWED_EXTENSIONS = {'jpg', 'gif', 'png', 'txt', 'pdf', 'jpeg'}  # Might use this at some point, probably don't want people to upload any file type
 
