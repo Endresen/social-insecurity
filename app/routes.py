@@ -40,10 +40,12 @@ def index():
         return redirect(url_for('stream', username=current_user()))
     form = IndexForm()
 
-    if form.login.validate_on_submit():
+    if form.login.submit.data and form.login.validate_on_submit():
         user = query_db('SELECT * FROM Users WHERE username=?;', [form.login.username.data], one=True)
-        pw_hash = argon2.generate_password_hash(form.login.data)
+        pw_hash = argon2.generate_password_hash(str(form.login.data).encode('utf8'))
         db_hash = user['password']
+        print(pw_hash)
+        print(db_hash)
         if argon2.check_password_hash(pw_hash, db_hash):
             currentuser = User()
             currentuser.id = user["username"]
@@ -54,16 +56,17 @@ def index():
             app.logger.warning('%s typed wrong password', user["username"])
             flash('Wrong login information')
 
-    if form.register.validate_on_submit():
+    if form.register.submit.data and form.register.validate_on_submit():
         check_user = query_db('SELECT * FROM Users WHERE username=?', [form.register.username.data],
                              one=True) is not None
         if not check_user:
-            query_db(
-                'INSERT INTO Users (username, first_name, last_name, password) VALUES(?, ?, ?, ?)'.format(
-                    form.register.username.data, form.register.first_name.data,
-                    form.register.last_name.data, argon2.generate_password_hash(form.register.password.data)))
+            reg_hash = argon2.generate_password_hash(str(form.register.password.data).encode('utf8'))
+            print(reg_hash)
+            query_db('INSERT INTO Users (username, first_name, last_name, password) VALUES(?,?,?,?);',
+                     [form.register.username.data, form.register.first_name.data,
+                      form.register.last_name.data, reg_hash])
             return redirect(url_for('index'))
-        flash(form.username.data + " is already taken")
+        flash(form.register.username.data + " is already taken")
     return render_template('index.html', title='Welcome', form=form)
 
 

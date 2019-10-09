@@ -6,10 +6,6 @@ from wtforms.validators import InputRequired, EqualTo, Length
 
 # defines all forms in the application, these will be instantiated by the template,
 # and the routes.py will read the values of the fields
-# There was some important security feature that wtforms provides, but I don't remember what; implement it
-# ^ CSRF?
-
-# TODO: homepage doesnt work cause inputrequired cant be on both registerform and loginform
 
 class LoginForm(FlaskForm):
     username = StringField('Username', render_kw={'placeholder': 'Username'}, validators=[InputRequired(
@@ -19,7 +15,7 @@ class LoginForm(FlaskForm):
         message='You must enter a password'),
         Length(min=5, max=25, message='Enter a password between 5 and 25 characters')])
     remember_me = BooleanField(
-        'Remember me')  # TODO: It would be nice to have this feature implemented, probably by using cookies
+        'Remember me')
 
     log_captcha = RecaptchaField(validators=[Recaptcha(message='Prove that you are human to continue')])
 

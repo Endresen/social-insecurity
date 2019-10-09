@@ -1,7 +1,4 @@
 from flask import Flask, g
-from flask_login import LoginManager
-from flask_wtf import CSRFProtect
-
 from config import Config
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
@@ -11,9 +8,6 @@ import ssl
 from flask_sqlalchemy import SQLAlchemy
 from flask_argon2 import Argon2
 from flask_wtf import CSRFProtect
-
-# TODO: implement this?
-# from flask_wtf.csrf import CSRFProtect #####https://flask-wtf.readthedocs.io/en/stable/csrf.html
 import flask_login
 import logging as log
 
@@ -21,15 +15,15 @@ import logging as log
 # create and configure app
 app = Flask(__name__)
 
-# csrf = CSRFProtect()
-# csrf.init_app(app)
-# csrf.protect()
+csrf = CSRFProtect()
+csrf.init_app(app)
+
 argon2 = Argon2(app)
 Bootstrap(app)
 
 app.config['SECRET_KEY'] = '45w0p5ttuGex5Ktk6KkVDFJ164JSaRr0u'
-app.config['RECAPTCHA_PUBLIC_KEY'] = '6LcFtLwUAAAAAG4IdRDBHUOg_M5ZwcTijXk2rpB0'
-app.config['RECAPTCHA_PRIVATE_KEY'] = '6LcFtLwUAAAAAObhd2OvXlY0VeOZtIBzWmjvGKUl'
+app.config['RECAPTCHA_PUBLIC_KEY'] = '6LdT97oUAAAAAIKKsg07xw79ZeG1vLvHEMWSH678'
+app.config['RECAPTCHA_PRIVATE_KEY'] = '6LdT97oUAAAAAMJU0SXQ-ysOU099fV6dTTO2V7Tr'
 app.config.from_object(Config)
 
 
