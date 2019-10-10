@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-body">
                     <h1 class="card-text">About {{username}}</h1>
-                    {% if is_current_user %}
+                    {% if current_user %}
                         <button type="button" class="btn btn-link" id="edit-button"><span class="fa fa-edit"></span>&nbsp;Edit</button>
                     {% endif %}
                     <!--View details-->
