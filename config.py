@@ -7,7 +7,7 @@ class Config(object):
     # SECRET_KEY = os.environ.get('SECRET_KEY') or 'secret'  # TODO: Use this with wtforms
     DATABASE = 'database.db'
     UPLOAD_PATH = 'app/static/uploads'
-    ALLOWED_EXTENSIONS = {'jpg', 'gif', 'png', 'txt', 'pdf', 'jpeg'}
+    ALLOWED_EXTENSIONS = {'jpg', 'gif', 'png', 'jpeg'}
 
     RECAPTCHA_USE_SSL = True
     FLASK_APP = os.environ.get('FLASK_APP')

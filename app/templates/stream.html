@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-sm-12 col-lg-6">
             <div class="card">
-                {% if is_current_user %}
+                {% if current_user %}
                     <div class="card-body">
                         <h1>Share something</h1>
                         <form action="" method="POST" novalidate enctype="multipart/form-data">

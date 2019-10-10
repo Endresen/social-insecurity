@@ -18,7 +18,7 @@ def logout():
 
 def allowed_file(filename):
     return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+           filename.lower().rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
 
 def is_logged_in():
@@ -45,19 +45,15 @@ def index():
 
         if user is not None:
             encoded_string = str(form.login.password.data).encode('utf8')
-            # print(encoded_string)
-            pw_hash = argon2.generate_password_hash(encoded_string)
             db_hash = user['password']
-            # print(pw_hash)
-            # print(db_hash)
-            if argon2.check_password_hash(pw_hash, db_hash):
+            if argon2.check_password_hash(db_hash, encoded_string):
                 currentuser = User()
                 currentuser.id = user["username"]
                 flask_login.login_user(currentuser, form.remember_me.data)
-                app.logger.info('%s logged in', form.login.data.id)
+                app.logger.info('%s logged in' % form.login.username.data)
                 return redirect(url_for('stream', username=form.login.username.data))
             else:
-                app.logger.warning('%s typed wrong password', user["username"])
+                app.logger.warning('%s typed wrong password' % user["username"])
                 flash('Wrong login information')
         else:
             flash("Wrong login information")
@@ -67,9 +63,7 @@ def index():
                               one=True) is not None
         if not check_user:
             enc_string = str(form.register.password.data).encode('utf8')
-            # print(enc_string)
             reg_hash = argon2.generate_password_hash(enc_string)
-            # print(reg_hash)
             query_db('INSERT INTO Users (username, first_name, last_name, password) VALUES(?,?,?,?);',
                      [form.register.username.data, form.register.first_name.data,
                       form.register.last_name.data, reg_hash])
@@ -90,24 +84,27 @@ def stream(username):
                 path = os.path.join(app.config['UPLOAD_PATH'], form.image.data.filename)
                 form.image.data.filename = secure_filename(form.image.data.filename)
                 form.image.data.save(path)
-                app.logger.info('\'%s\' successfully uploaded \'%s\'', current_user(),
+                app.logger.info('%s successfully uploaded %s' % current_user(),
                                 form.image.data.filename)
                 flash('File uploaded')
+            elif form.image.data is None:
+                flash('Comment posted without image')
             else:
-                app.logger.warning('\'%s\' tried to upload non whitelisted filetype', current_user())
-                flash('Cannot uplad files of that type')
+                app.logger.warning('%s tried to upload non whitelisted filetype' % current_user())
 
-        query_db(
-            'INSERT INTO Posts (u_id, content, image, creation_time) VALUES(?, ?, ?, ?);',
-            [user['id'], form.content.data,
-             form.image.data.filename,
-             datetime.now()])
+        if this_user(username):
+            query_db(
+                'INSERT INTO Posts (u_id, content, image, creation_time) VALUES(?, ?, ?, ?);',
+                [user['id'], form.content.data,
+                 form.image.data.filename,
+                 datetime.now()])
+        else:
+            flash('You cannot comment as %s' % username)
+
         return redirect(url_for('stream', username=username))
-    else:
-        flash("This is not your profile to edit")
 
     if user is None:
-        app.logger.warning('User \'%s\' entered unregistered user in url and tried to access stream \'%s\'',
+        app.logger.warning('%s entered unregistered user in url and tried to access stream %s' %
                            current_user(), username)
         flash(username + " does not exist")
         return redirect('/stream/' + current_user())
@@ -116,7 +113,7 @@ def stream(username):
         'SELECT p.*, u.*, (SELECT COUNT(*) FROM Comments WHERE p_id=p.id) AS cc FROM Posts AS p JOIN Users AS u ON u.id=p.u_id WHERE p.u_id IN (SELECT u_id FROM Friends WHERE f_id=?) OR p.u_id IN (SELECT f_id FROM Friends WHERE u_id=?) OR p.u_id=? ORDER BY p.creation_time DESC;',
         [user['id'], user['id'], user['id']])
     return render_template('stream.html', title='Stream', username=username, form=form, posts=posts,
-                           is_current_user=current_user(username))
+                           is_current_user=this_user(username))
 
 
 # comment page for a given post and user.
@@ -130,8 +127,8 @@ def comments(username, p_id):
             query_db('INSERT INTO Comments (p_id, u_id, comment, creation_time) VALUES(?,?,?,?);',
                      [p_id, user['id'], form.comment.data, datetime.now()])
         else:
-            app.logger.warning('\'%s\' tried to comment as %s', current_user(), username)
-            flash("Can't comment on this post")
+            app.logger.warning('%s tried to comment as %s' % (current_user(), username))
+            flash("Can't comment on this post as someone else")
             return redirect(url_for('stream', username=username))
 
     post = query_db('SELECT * FROM Posts WHERE id=?;', [p_id], one=True)
@@ -148,7 +145,7 @@ def comments(username, p_id):
 def friends(username):
     user = query_db('SELECT * FROM Users WHERE username=?;', [username], one=True)
     if user is None:
-        app.logger.warning('\'%s\' tried to access friends of non-existent user \'%s\'', current_user(), username)
+        app.logger.warning('%s tried to access friends of non-existent user %s' % current_user(), username)
         flash(username + " does not exist")
         return redirect('/friends/' + current_user())
 
@@ -159,14 +156,14 @@ def friends(username):
     if form.validate_on_submit():
         friend = query_db('SELECT * FROM Users WHERE username=?;', [form.username.data], one=True)
         if friend is None:
-            app.logger.warning('\'%s\' atttempted to add unregistered friend', current_user(), username)
+            app.logger.warning('%s atttempted to add unregistered friend' % current_user())
             flash('User does not exist')
         elif not this_user(username):
-            app.logger.warning('\'%s\' tried to add \'%s\' as friend to %s\'s profile', current_user(),
-                               friend['username'], username)
+            app.logger.warning('%s tried to add %s as friend to the profile of %s' % (current_user(),
+                               friend['username'], username))
             flash('Cannot force people to be friends')
         elif username == form.username.data:
-            app.logger.warning('\'%s\' got lonely and added himself as a friend', username)
+            app.logger.warning('%s got lonely and added himself as a friend' % username)
             flash('You cant add yourself as a friend')
         else:
             is_friended = False
@@ -176,16 +173,16 @@ def friends(username):
                     break
 
             if is_friended:
-                app.logger.warning('\'%s\' tried to add existing friend \'%s\' as friend again',
-                                   username, friend['username'])
+                app.logger.warning('%s tried to add existing friend %s as friend again' %
+                                   (username, friend['username']))
                 flash(friend['username'] + ' is already your friend')
             else:
-                app.logger.info('\'%s\' successfully added friend \'%s\'', current_user(), friend['username'])
+                app.logger.info('%s successfully added friend %s' % (current_user(), friend['username']))
                 query_db('INSERT INTO Friends (u_id, f_id) VALUES(?, ?);', [user['id'], friend['id']])
                 friends.append(friend)
 
     return render_template('friends.html', title='Friends', username=username, friends=friends, form=form,
-                           current_user=current_user(username))
+                           current_user=this_user(username))
 
 
 # see and edit detailed profile information of a user
@@ -196,18 +193,18 @@ def profile(username):
     if form.validate_on_submit():
         if this_user(username):
             query_db(
-                'UPDATE Users SET education=?, employment=?, music=?, movie=?, nationality=?, birthday=? WHERE'
-                ' username=? ;',
+                'UPDATE Users SET education=?, employment=?, music=?, movie=?, nationality=?, birthday=? WHERE username=? ;',
                 [form.education.data, form.employment.data, form.music.data, form.movie.data, form.nationality.data,
                  form.birthday.data, username])
-            app.logger.info('\'%s\' edited his own profile', current_user())
+            app.logger.info('%s edited his own profile' % current_user())
             return redirect(url_for('profile', username=username))
-        app.logger.warning('\'%s\' tried to edit %s\'s profile', current_user(), username)
+        app.logger.warning('%s tried to edit the profile of %s' % current_user(), username)
 
         flash("This is not your profile to edit")
 
     user = query_db('SELECT * FROM Users WHERE username=?;', [username], one=True)
     if user is None:
+        app.logger.warning('%s tried to access profile of unregistered user %s' % current_user(), username)
         flash(username + " does not exist")
         return redirect('/profile/' + current_user())
 
