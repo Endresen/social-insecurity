@@ -44,17 +44,18 @@ def index():
         user = query_db('SELECT * FROM Users WHERE username=?;', [form.login.username.data], one=True)
 
         if user is not None:
+            #plain_pass = form.login.password.data
             encoded_string = str(form.login.password.data).encode('utf8')
             # print(encoded_string)
             pw_hash = argon2.generate_password_hash(encoded_string)
             db_hash = user['password']
             # print(pw_hash)
-            # print(db_hash)
-            if argon2.check_password_hash(pw_hash, db_hash):
+            #print(db_hash)
+            if argon2.check_password_hash(db_hash, encoded_string):
                 currentuser = User()
                 currentuser.id = user["username"]
                 flask_login.login_user(currentuser, form.remember_me.data)
-                app.logger.info('%s logged in', form.login.data.id)
+                app.logger.info('%s logged in', form.login.username.data)
                 return redirect(url_for('stream', username=form.login.username.data))
             else:
                 app.logger.warning('%s typed wrong password', user["username"])
@@ -95,7 +96,7 @@ def stream(username):
                 flash('File uploaded')
             else:
                 app.logger.warning('\'%s\' tried to upload non whitelisted filetype', current_user())
-                flash('Cannot uplad files of that type')
+                flash('Cannot upload files of that type')
 
         query_db(
             'INSERT INTO Posts (u_id, content, image, creation_time) VALUES(?, ?, ?, ?);',
@@ -116,7 +117,7 @@ def stream(username):
         'SELECT p.*, u.*, (SELECT COUNT(*) FROM Comments WHERE p_id=p.id) AS cc FROM Posts AS p JOIN Users AS u ON u.id=p.u_id WHERE p.u_id IN (SELECT u_id FROM Friends WHERE f_id=?) OR p.u_id IN (SELECT f_id FROM Friends WHERE u_id=?) OR p.u_id=? ORDER BY p.creation_time DESC;',
         [user['id'], user['id'], user['id']])
     return render_template('stream.html', title='Stream', username=username, form=form, posts=posts,
-                           is_current_user=current_user(username))
+                           is_current_user=this_user(username))
 
 
 # comment page for a given post and user.
@@ -185,7 +186,7 @@ def friends(username):
                 friends.append(friend)
 
     return render_template('friends.html', title='Friends', username=username, friends=friends, form=form,
-                           current_user=current_user(username))
+                           current_user=this_user(username))
 
 
 # see and edit detailed profile information of a user

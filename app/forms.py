@@ -49,7 +49,7 @@ class RegisterForm(FlaskForm):
 class IndexForm(FlaskForm):
     login = FormField(LoginForm)
     register = FormField(RegisterForm)
-
+    remember_me = BooleanField('Remember me')
 
 class PostForm(FlaskForm):
     content = TextAreaField('New Post', render_kw={'placeholder': 'What are you thinking about?'})
